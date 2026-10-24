@@ -58,7 +58,11 @@ if (form) {
 		button.disabled = true;
 		try {
 			const res = await fetch(endpoint, { method: 'POST', body: data, headers: { Accept: 'application/json' } });
-			if (!res.ok) throw new Error(res.status);
+			if (!res.ok) {
+				const detail = await res.json().catch(() => ({}));
+				console.error('Contact form rejected:', res.status, detail);
+				throw new Error(res.status);
+			}
 			form.reset();
 			show('Thank you! Your message has been sent. We\'ll get back to you as soon as we can.');
 		} catch {
