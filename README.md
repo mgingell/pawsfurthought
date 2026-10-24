@@ -67,10 +67,10 @@ Search `src/pages/` for **`[CONFIRM]`**. These show as yellow tags on the pages 
 
 ## Publishing: Cloudflare Pages (connected to GitHub)
 
-The source lives at https://github.com/mgingell/pawfurthought. Cloudflare Pages builds and publishes the site automatically every time you push to `main`.
+The source lives at https://github.com/mgingell/pawsfurthought. Cloudflare Pages builds and publishes the site automatically every time you push to `main`.
 
 **One-time setup** in the Cloudflare dashboard (**Workers & Pages → Create → Pages → Connect to Git**):
-1. Choose the `mgingell/pawfurthought` repository.
+1. Choose the `mgingell/pawsfurthought` repository.
 2. Production branch: `main`.
 3. Framework preset: **None**.
 4. Build command: `python build.py`
