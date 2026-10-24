@@ -1,0 +1,90 @@
+/* =========================================================
+   Paws Fur Thought — site-wide tweaks
+   Paste into: Appearance → Customize → Additional CSS
+   (replace anything already there only if you know what it is)
+   ========================================================= */
+
+:root {
+	--pft-red: #C50000;       /* button red already used on the site */
+	--pft-red-dark: #8B0000;  /* hover / pressed */
+	--pft-taupe: #ADA49B;     /* banner background — use dark text on it */
+	--pft-cream: #F6F3EE;     /* soft section background */
+	--pft-ink: #1E1E1E;
+}
+
+/* Buttons: white text on red (was near-black on red, which failed contrast).
+   Hover fills darker red, so the button stays visible on white sections too. */
+.elementor-button,
+.elementor-button:visited {
+	background-color: var(--pft-red) !important;
+	border-color: var(--pft-red) !important;
+	color: #fff !important;
+}
+.elementor-button:hover,
+.elementor-button:focus {
+	background-color: var(--pft-red-dark) !important;
+	border-color: var(--pft-red-dark) !important;
+	color: #fff !important;
+}
+
+/* Secondary (outline) button — add CSS class "pft-btn-outline" to a Button widget
+   (Advanced tab → CSS Classes). Meant for dark/photo backgrounds. */
+.pft-btn-outline .elementor-button {
+	background-color: transparent !important;
+	border-color: #fff !important;
+}
+.pft-btn-outline .elementor-button:hover,
+.pft-btn-outline .elementor-button:focus {
+	background-color: #fff !important;
+	color: var(--pft-ink) !important;
+}
+
+/* Visible keyboard focus everywhere */
+a:focus-visible,
+button:focus-visible,
+.elementor-button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+	outline: 3px solid #FFC845;
+	outline-offset: 3px;
+}
+
+/* Section backgrounds — add a class to a Section/Container (Advanced → CSS Classes) */
+.pft-band-cream { background-color: var(--pft-cream); }
+.pft-band-taupe { background-color: var(--pft-taupe); color: var(--pft-ink); }
+.pft-band-taupe .elementor-heading-title { color: var(--pft-ink); }
+
+/* Stat counters on the home page */
+.pft-stat .elementor-counter-number-wrapper { color: var(--pft-red); font-weight: 700; }
+.pft-stat .elementor-counter-title { color: var(--pft-ink); font-size: 1rem; }
+
+/* "Donate" menu item as a button — add CSS class "pft-menu-donate" to the menu item
+   (Appearance → Menus → Screen Options → tick "CSS Classes") */
+.pft-menu-donate > a {
+	background: var(--pft-red);
+	color: #fff !important;
+	border-radius: 100px;
+	padding: 8px 20px !important;
+}
+.pft-menu-donate > a:hover,
+.pft-menu-donate > a:focus { background: var(--pft-red-dark); }
+
+/* Team photos: same height, rounded */
+.pft-team img {
+	aspect-ratio: 3 / 4;
+	object-fit: cover;
+	border-radius: 12px;
+}
+
+/* Partner logos: modest size */
+.pft-partner img { max-height: 110px; width: auto; }
+
+/* Respect users who ask for less motion */
+@media (prefers-reduced-motion: reduce) {
+	*, *::before, *::after {
+		animation-duration: 0.01ms !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
+}

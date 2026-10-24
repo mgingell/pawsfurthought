@@ -1,0 +1,77 @@
+# Local practice copy of pawsfurthought.ca
+#   Site:      http://localhost:8080
+#   Admin:     http://localhost:8080/wp-admin
+#   Mail trap: http://localhost:8025   (every email the site sends lands here, nothing goes out)
+# See README.md in this folder.
+
+name: pft-local
+
+services:
+  db:
+    image: mariadb:11.4
+    restart: unless-stopped
+    environment:
+      MARIADB_DATABASE: wordpress
+      MARIADB_USER: wordpress
+      MARIADB_PASSWORD: wordpress
+      MARIADB_ROOT_PASSWORD: rootpass
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+  wordpress:
+    image: wordpress:php8.3-apache
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8080:80"
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+      # Pin the local URL so an imported copy of the live site can never point back at pawsfurthought.ca
+      WORDPRESS_CONFIG_EXTRA: |
+        define('WP_HOME', 'http://localhost:8080');
+        define('WP_SITEURL', 'http://localhost:8080');
+        define('WP_ENVIRONMENT_TYPE', 'local');
+    volumes:
+      - wp_data:/var/www/html
+      - ./php/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini:ro
+      - ./mu-plugins/local-mailpit.php:/var/www/html/wp-content/mu-plugins/local-mailpit.php:ro
+      # Static mock-up of the redesigned home page: http://localhost:8080/preview/home.html
+      - ../preview:/var/www/html/preview:ro
+      - ../assets:/var/www/html/assets:ro
+
+  # Runs WP-CLI commands for setup.ps1; not a long-running service
+  wpcli:
+    image: wordpress:cli-php8.3
+    profiles: ["tools"]
+    user: "33:33"   # match www-data in the wordpress image so file permissions line up
+    depends_on:
+      - wordpress
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+    volumes:
+      - wp_data:/var/www/html
+      - ./php/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini:ro
+      - ./mu-plugins/local-mailpit.php:/var/www/html/wp-content/mu-plugins/local-mailpit.php:ro
+
+  mailpit:
+    image: axllent/mailpit:latest
+    restart: unless-stopped
+    ports:
+      - "8025:8025"
+
+volumes:
+  db_data:
+  wp_data:
