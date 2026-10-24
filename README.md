@@ -43,7 +43,7 @@ archive/wordpress/ the earlier WordPress update guides, kept for reference
 - **Change text on a page:** edit `src/pages/<page>.html`. The comment at the top sets the browser-tab title and the description search engines show.
 - **Change the menu or footer:** edit `src/layout.html`. The menu order lives in `NAV` at the top of `build.py`.
 - **Add a gallery photo:** put a JPG in `src/static/img/gallery/` (about 1600 px wide is plenty) and add a line to `src/gallery.json` with its file name and a short description of what's in the photo. Optionally add a 600×600 square copy with the same name in `gallery/thumbs/` so the grid loads faster. Without one, the full photo is used.
-- **Update the "100+ dogs paired" figure:** it's in `src/pages/index.html` and `src/pages/donate.html`.
+- **Update the "dogs paired" and CARES figures:** they appear in `src/pages/index.html`, `src/pages/donate.html` and `src/pages/faq.html`.
 
 ## Settings (`src/site.json`)
 
@@ -56,14 +56,21 @@ archive/wordpress/ the earlier WordPress update guides, kept for reference
 
 Rebuild after changing settings (automatic if `--watch` is running).
 
-## Things to confirm before going live
+## Before going live
 
-Search `src/pages/` for **`[CONFIRM]`**. These show as yellow tags on the pages until you fill them in:
-- FAQ: typical wait between acceptance and the training trip
-- FAQ: is the rental car reimbursed, and are meals covered?
-- Contact: realistic reply time
-- Home "Our Teams": do the people in `team-1..3.jpg` agree to appear on the site?
-- Donate: walk through WWC's donation form once to check "PTSD Service Dogs" and the comment box still exist under those names
+- **Contact form:** set up Formspree (below) or keep the email-app fallback.
+- **Team photos:** three veteran-and-dog photos are in `archive/unpublished-photos/`. They aren't published, pending consent. To feature teams again, copy approved photos to `src/static/img/` and add a section to `src/pages/index.html`.
+- **Gallery:** add new photos (see *Common edits*).
+
+### Contact form with Formspree
+
+1. Sign up at [formspree.io](https://formspree.io) with the email that should receive messages, and verify it.
+2. Create a **New Form** (e.g. "Website contact"), and copy its endpoint, which looks like `https://formspree.io/f/abcdwxyz`.
+3. Paste it into `src/site.json` as `contact_form_endpoint`, then rebuild.
+4. Test at http://localhost:8080/contact/. The first submission may ask you to confirm the form by email.
+5. Optional, after testing: in the form's settings, restrict submissions to `pawsfurthought.ca`. Doing this earlier blocks your local tests.
+
+Messages arrive with the subject "Website message: <topic>", and the visitor's address is set as reply-to, so you can just hit Reply. The form also has a hidden spam trap (`_gotcha`) that Formspree recognizes.
 
 ## Publishing: Cloudflare Pages (connected to GitHub)
 

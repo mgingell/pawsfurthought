@@ -1,6 +1,6 @@
 {
 	"email": "info.pawsfurthought@gmail.com",
-	"intake_form_url": "",
-	"contact_form_endpoint": "",
+	"intake_form_url": "https://pawsfurthought.atlassian.net/jira/core/form/cc5a4e09-cd2c-41f8-b225-385577f5bb03?atlOrigin=eyJpIjoiMDQ4M2U1M2M2OTJiNGY5ZThjNDFjMzRjZGViMzY3N2IiLCJwIjoiaiJ9",
+	"contact_form_endpoint": "https://formspree.io/f/xjyykodr",
 	"site_url": "https://pawsfurthought.ca"
 }

@@ -53,6 +53,7 @@ if (form) {
 			return;
 		}
 
+		data.append('_subject', `Website message: ${data.get('topic')}`);
 		const button = form.querySelector('button[type="submit"]');
 		button.disabled = true;
 		try {

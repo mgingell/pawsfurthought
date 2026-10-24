@@ -57,8 +57,11 @@ def nav_html(current):
 
 
 def gallery_html():
+    photos = json.loads(read(SRC, "gallery.json"))
+    if not photos:
+        return '\t\t\t\t<p class="gallery-empty">New photos are on the way. Please check back soon.</p>'
     tiles = []
-    for photo in json.loads(read(SRC, "gallery.json")):
+    for photo in photos:
         f = photo["file"]
         full = f"/img/gallery/{f}"
         thumb = f"/img/gallery/thumbs/{f}" if os.path.exists(os.path.join(SRC, "static", "img", "gallery", "thumbs", f)) else full
@@ -69,9 +72,10 @@ def gallery_html():
 def intake_parts(cfg):
     url, email = cfg["intake_form_url"], cfg["email"]
     if url:
-        status = (f'<div class="callout"><p><strong>Applications are open.</strong> Complete our online intake form to get started. '
-                  f'For questions about successor dogs or general inquiries, email <a href="mailto:{email}">{email}</a>.</p></div>')
-        button = f'<a class="btn" href="{html.escape(url)}" target="_blank" rel="noopener">Start the Intake Form</a>'
+        status = (f'<div class="callout"><p><strong>Applications are open.</strong> Start with our short online intake screening form. '
+                  f'For questions about successor dogs or general inquiries, email <a href="mailto:{email}">{email}</a>.</p>'
+                  f'<p><a class="btn" href="{html.escape(url)}" target="_blank" rel="noopener">Start the Intake Screening Form</a></p></div>')
+        button = f'<a class="btn" href="{html.escape(url)}" target="_blank" rel="noopener">Start the Intake Screening Form</a>'
     else:
         status = (f'<div class="callout"><p><strong>Our online intake form will be available in late October 2026.</strong> Please check back soon. '
                   f'For questions about successor dogs or general inquiries, email <a href="mailto:{email}">{email}</a>.</p></div>')
@@ -108,6 +112,8 @@ def build():
         "email": cfg["email"],
         "site_url": site_url,
         "contact_form_endpoint": html.escape(cfg["contact_form_endpoint"]),
+        # Lets the form post directly to the service if JavaScript is off
+        "contact_form_action": f'action="{html.escape(cfg["contact_form_endpoint"])}" method="POST" ' if cfg["contact_form_endpoint"] else "",
         "intake_status": intake_status,
         "intake_button": intake_button,
         "year": str(datetime.date.today().year),

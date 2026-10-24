@@ -15,7 +15,7 @@ description: Email or message Paws Fur Thought about service dogs, successor dog
 				<h2>Send Us a Message</h2>
 				<p>Interested in a service dog? Please start with the <a href="/apply/">Apply page</a>. Have a question about successor dogs, donations or anything else? Send us a note.</p>
 				<div class="form-msg" tabindex="-1" role="status"></div>
-				<form class="mock contact" data-endpoint="{{contact_form_endpoint}}" data-email="{{email}}" novalidate>
+				<form class="mock contact" {{contact_form_action}}data-endpoint="{{contact_form_endpoint}}" data-email="{{email}}" novalidate>
 					<div><label for="f-name">Name <span class="req" aria-hidden="true">*</span></label><input id="f-name" name="name" autocomplete="name" required></div>
 					<div><label for="f-email">Email <span class="req" aria-hidden="true">*</span></label><input id="f-email" name="email" type="email" autocomplete="email" required></div>
 					<div><label for="f-phone">Phone <span class="small">(optional)</span></label><input id="f-phone" name="phone" type="tel" autocomplete="tel"></div>
@@ -35,7 +35,7 @@ description: Email or message Paws Fur Thought about service dogs, successor dog
 			<aside class="aside" aria-label="Email">
 				<h2>Email Us</h2>
 				<p><a href="mailto:{{email}}">{{email}}</a></p>
-				<p class="small">We're a volunteer-run organization. We do our best to reply within a few days. <span class="todo">[CONFIRM]</span></p>
+				<p class="small">Paws Fur Thought is run by volunteers. We reply as soon as we can, but please allow up to two weeks, especially if we're travelling.</p>
 				<p class="small">Looking for answers now? Try the <a href="/faq/">FAQ</a>.</p>
 			</aside>
 		</div>
