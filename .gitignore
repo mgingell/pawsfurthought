@@ -11,3 +11,6 @@ logos-donors/
 
 # Originals waiting to be added with add_photos.py (and processed ones in done/)
 photos-incoming/
+
+# Private data sources (e.g. placement map built from the master contact list)
+Cares and Paws Placement Map.pdf

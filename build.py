@@ -77,6 +77,82 @@ def gallery_html():
     return "\n".join(tiles)
 
 
+def impact_values():
+    """Figures and chart markup from src/impact.json for the {{impact_*}} placeholders."""
+    d = json.loads(read(SRC, "impact.json"))
+    prov, years = d["by_province"], d["by_year"]
+    if sum(years.values()) != d["total_dogs"]:
+        print(f"  WARNING impact.json: by_year adds up to {sum(years.values())}, total_dogs is {d['total_dogs']}")
+    if sum(prov.values()) > d["total_dogs"]:
+        print(f"  WARNING impact.json: by_province adds up to more than total_dogs")
+
+    # Horizontal bars: dogs by province, largest first, value at the bar tip
+    top = max(prov.values())
+    rows = []
+    for name, n in sorted(prov.items(), key=lambda kv: -kv[1]):
+        tip = html.escape(f"{name}: {n} dog{'s' if n != 1 else ''}")
+        rows.append(
+            f'\t\t\t\t\t<div class="hbar" tabindex="0" data-tip="{tip}">'
+            f'<span class="hbar-label">{html.escape(name)}</span>'
+            f'<span class="hbar-track"><span class="hbar-fill" style="width:{n / top * 100:.1f}%"></span>'
+            f'<span class="hbar-value">{n}</span></span></div>')
+
+    # Columns: dogs per year on a 0-5-10-15 axis; label only the peak and the latest year
+    ymax = max(5, -(-max(years.values()) // 5) * 5)
+    peak = max(years, key=years.get)
+    notes = d.get("year_notes", {})
+    latest = max(years)
+    cols = []
+    for y, n in years.items():
+        label = f'<span class="col-value">{n}</span>' if y in (peak, latest) or n == 0 else ""
+        tip = f"{y}: {n} dog{'s' if n != 1 else ''}" + (f" (to {d['as_of']})" if y == latest else "")
+        if y in notes:
+            tip += f". {notes[y]}"
+        tip = html.escape(tip)
+        cols.append(
+            f'\t\t\t\t\t\t<div class="col" tabindex="0" data-tip="{tip}">'
+            f'<span class="col-bar" style="height:{n / ymax * 100:.1f}%">{label}</span>'
+            f'<span class="col-year">’{y[2:]}</span></div>')
+    ticks = "".join(f'<span class="tick" style="bottom:{t / ymax * 100:.1f}%">{t}</span>' for t in range(0, ymax + 1, 5))
+
+    table_rows = "".join(f"<tr><th scope=\"row\">{html.escape(k)}</th><td>{v}</td></tr>" for k, v in sorted(prov.items(), key=lambda kv: -kv[1]))
+    year_rows = "".join(f"<tr><th scope=\"row\">{k}</th><td>{v}</td></tr>" for k, v in years.items())
+    charts = f"""<div class="impact-grid">
+				<figure class="chart-card">
+					<figcaption><h3>Dogs placed by province</h3><p class="small">By the handler's home province when the dog was placed</p></figcaption>
+					<div class="hbars">
+{chr(10).join(rows)}
+					</div>
+					<p class="small chart-note">{html.escape(d["unmapped_note"])}</p>
+				</figure>
+				<figure class="chart-card">
+					<figcaption><h3>Dogs placed each year</h3><p class="small">{d["since"]} to {html.escape(d["as_of"])}</p></figcaption>
+					<div class="cols-chart">
+						<div class="ticks" aria-hidden="true">{ticks}</div>
+						<div class="cols">
+{chr(10).join(cols)}
+						</div>
+					</div>
+					<p class="small chart-note">{" ".join(html.escape(t) for t in notes.values())} {latest} figure is for January to {html.escape(d["as_of"].split()[0])} only.</p>
+				</figure>
+			</div>
+			<details class="chart-table">
+				<summary>Show these figures as a table</summary>
+				<div class="chart-tables">
+					<table><caption>Dogs placed by province</caption><thead><tr><th scope="col">Province</th><th scope="col">Dogs</th></tr></thead><tbody>{table_rows}</tbody></table>
+					<table><caption>Dogs placed each year</caption><thead><tr><th scope="col">Year</th><th scope="col">Dogs</th></tr></thead><tbody>{year_rows}</tbody></table>
+				</div>
+			</details>
+			<div class="chart-tip" role="status" aria-live="polite" hidden></div>"""
+    return {
+        "impact_total": str(d["total_dogs"]),
+        "impact_communities": str(d["communities"]),
+        "impact_provinces": str(d["province_count"]),
+        "impact_since": str(d["since"]),
+        "impact_charts": charts,
+    }
+
+
 def intake_parts(cfg):
     url, email = cfg["intake_form_url"], cfg["email"]
     if url:
@@ -125,6 +201,7 @@ def build():
         "intake_status": intake_status,
         "intake_button": intake_button,
         "year": str(datetime.date.today().year),
+        **impact_values(),
     }
     sitemap = []
     for file in sorted(os.listdir(os.path.join(SRC, "pages"))):

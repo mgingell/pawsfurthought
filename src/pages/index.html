@@ -6,7 +6,7 @@ description: Paws Fur Thought is a small, volunteer-led organization placing tra
 		<div class="wrap">
 			<div class="kicker">Paws Fur Thought</div>
 			<h1 id="hero-title">Service Dogs for Veterans with PTSD</h1>
-			<p>Paws Fur Thought is a small, volunteer-led organization that coordinates the placement of fully trained, certified service dogs with Canadian Military and RCMP veterans and serving members living with an Operational Stress Injury (OSI) or PTSD. Proudly serving Atlantic Canada since 2013.</p>
+			<p>Paws Fur Thought is a small, volunteer-led organization that coordinates the placement of fully trained, certified service dogs with Canadian Military and RCMP veterans and serving members living with an Operational Stress Injury (OSI) or PTSD. Since {{impact_since}}, we've placed {{impact_total}} dogs across Canada, and today we proudly serve veterans in Atlantic Canada.</p>
 			<div class="btns">
 				<a class="btn" href="/apply/">Apply for a Service Dog</a>
 				<a class="btn" href="/donate/">Donate</a>
@@ -16,10 +16,11 @@ description: Paws Fur Thought is a small, volunteer-led organization placing tra
 	</section>
 
 	<div class="band-cream">
-		<div class="wrap stats">
-			<div class="stat"><b>125+</b>Service dogs placed in Canada since 2013</div>
+		<div class="wrap stats four">
+			<div class="stat"><b>{{impact_total}}</b>Service dogs placed since {{impact_since}}</div>
+			<div class="stat"><b>{{impact_communities}}</b>Communities across Canada</div>
+			<div class="stat"><b>{{impact_provinces}}</b>Provinces</div>
 			<div class="stat"><b>Nearly 2,200</b>Dogs placed by CARES since 1993</div>
-			<div class="stat"><b>5</b>Days of hands-on training with your dog</div>
 		</div>
 	</div>
 
@@ -63,7 +64,15 @@ description: Paws Fur Thought is a small, volunteer-led organization placing tra
 		</div>
 	</section>
 
-	<section class="band-cream">
+	<section class="band-cream" id="impact">
+		<div class="wrap">
+			<h2>Our Impact</h2>
+			<p style="max-width:62ch">Since {{impact_since}}, Paws Fur Thought has placed {{impact_total}} service dogs with veterans in {{impact_communities}} communities across {{impact_provinces}} provinces. Today we focus on veterans in Atlantic Canada.</p>
+			{{impact_charts}}
+		</div>
+	</section>
+
+	<section>
 		<div class="wrap">
 			<h2>Our Partners</h2>
 			<div class="partners">

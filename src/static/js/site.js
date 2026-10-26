@@ -24,6 +24,28 @@ if (box) {
 	box.addEventListener('click', e => { if (e.target === box) box.close(); });
 }
 
+// Chart tooltips: each bar/column carries its own data-tip; shown on hover and keyboard focus
+const tip = document.querySelector('.chart-tip');
+if (tip) {
+	const show = (el, x, y) => {
+		tip.textContent = el.dataset.tip;
+		tip.hidden = false;
+		const r = tip.getBoundingClientRect();
+		tip.style.left = Math.min(window.innerWidth - r.width - 8, Math.max(8, x - r.width / 2)) + 'px';
+		tip.style.top = Math.max(8, y - r.height - 12) + 'px';
+	};
+	const hide = () => { tip.hidden = true; };
+	document.querySelectorAll('[data-tip]').forEach(el => {
+		el.addEventListener('pointermove', e => show(el, e.clientX, e.clientY));
+		el.addEventListener('pointerleave', hide);
+		el.addEventListener('focus', () => {
+			const r = el.getBoundingClientRect();
+			show(el, r.left + r.width / 2, r.top);
+		});
+		el.addEventListener('blur', hide);
+	});
+}
+
 // Contact form
 // With data-endpoint (e.g. a Formspree URL) the message is posted there.
 // Without one, the visitor's email app opens with the message filled in.
