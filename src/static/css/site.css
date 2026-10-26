@@ -144,7 +144,7 @@ nav .donate a:hover, nav .donate a[aria-current="page"] { background: var(--red-
 /* major supporters */
 .supporters { list-style: none; padding: 0; margin: 28px 0 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
 .supporters li { display: flex; }
-.supporters a { flex: 1; display: flex; flex-direction: column; gap: 14px; align-items: center; justify-content: center; background: var(--cream); border-top: 5px solid var(--red); border-radius: 12px; padding: 28px 24px; text-align: center; font: 600 1.1rem/1.4 Poppins, sans-serif; color: var(--ink); text-decoration: none; transition: box-shadow .2s, color .2s; }
+.supporters a, .supporters .card { flex: 1; display: flex; flex-direction: column; gap: 14px; align-items: center; justify-content: center; background: var(--cream); border-top: 5px solid var(--red); border-radius: 12px; padding: 28px 24px; text-align: center; font: 600 1.1rem/1.4 Poppins, sans-serif; color: var(--ink); text-decoration: none; transition: box-shadow .2s, color .2s; }
 .supporters img { width: 200px; height: 120px; max-width: 100%; object-fit: contain; }
 /* When a card has a logo, the name is hidden visually but still read by screen readers */
 .supporters img + .name { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
