@@ -60,6 +60,14 @@ def gallery_html():
     photos = json.loads(read(SRC, "gallery.json"))
     if not photos:
         return '\t\t\t\t<p class="gallery-empty">New photos are on the way. Please check back soon.</p>'
+    missing = [p["file"] for p in photos if not p.get("alt") or p["alt"] == "DESCRIBE THIS PHOTO"]
+    if missing:
+        print(f"  WARNING gallery.json: {len(missing)} photo(s) still need a description: {', '.join(missing)}")
+    folder = os.path.join(SRC, "static", "img", "gallery")
+    listed = {p["file"] for p in photos}
+    unused = sorted(f for f in os.listdir(folder) if os.path.isfile(os.path.join(folder, f)) and f not in listed)
+    if unused:
+        print(f"  NOTE: {len(unused)} photo(s) in img/gallery/ aren't in gallery.json (still uploaded, not shown)")
     tiles = []
     for photo in photos:
         f = photo["file"]

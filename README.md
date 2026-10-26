@@ -42,7 +42,7 @@ archive/wordpress/ the earlier WordPress update guides, kept for reference
 
 - **Change text on a page:** edit `src/pages/<page>.html`. The comment at the top sets the browser-tab title and the description search engines show.
 - **Change the menu or footer:** edit `src/layout.html`. The menu order lives in `NAV` at the top of `build.py`.
-- **Add a gallery photo:** put a JPG in `src/static/img/gallery/` (about 1600 px wide is plenty) and add a line to `src/gallery.json` with its file name and a short description of what's in the photo. Optionally add a 600×600 square copy with the same name in `gallery/thumbs/` so the grid loads faster. Without one, the full photo is used.
+- **Add gallery photos:** put the originals (JPG, PNG or iPhone HEIC, any size) in `photos-incoming/` and run `python add_photos.py`. It fixes sideways photos, saves a web-sized copy and a square thumbnail, adds each photo to the end of `src/gallery.json`, and moves the originals to `photos-incoming/done/`. Then open `src/gallery.json` and replace each `DESCRIBE THIS PHOTO` with a short description of what's in the picture; screen readers read it aloud to blind visitors, and the build warns about any you've missed. To reorder photos, move their lines in `gallery.json`; to remove one, delete its line.
 - **Update the "dogs paired" and CARES figures:** they appear in `src/pages/index.html`, `src/pages/donate.html` and `src/pages/faq.html`.
 
 ## Settings (`src/site.json`)

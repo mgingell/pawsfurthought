@@ -8,3 +8,6 @@ Thumbs.db
 
 # Original donor logo files (web-ready copies live in src/static/img/supporters/)
 logos-donors/
+
+# Originals waiting to be added with add_photos.py (and processed ones in done/)
+photos-incoming/
